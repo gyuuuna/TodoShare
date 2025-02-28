@@ -1,4 +1,5 @@
 import os
+import random
 import streamlit as st
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
@@ -21,7 +22,7 @@ kst = pytz.timezone("Asia/Seoul")
 st.set_page_config(page_title="TodoShare", layout="wide")
 
 # 화면 선택
-page = st.sidebar.radio("메뉴", ["할 일 입력", "할 일", "완료된 할 일"])
+page = st.sidebar.radio("메뉴", ["할 일 입력", "랜덤 뽑기", "할 일", "완료된 할 일"])
 
 if page == "할 일 입력":
     st.title("Todo 입력")
@@ -95,6 +96,19 @@ if page == "할 일 입력":
                 )
                 st.success("완료 처리됨!")
                 st.rerun()
+
+elif page == "랜덤 뽑기":
+    # choose random item
+    st.title("랜덤 뽑기")
+    items = list(todos.find({"completed": False}))
+    button = st.button("랜덤 뽑기")
+    if button:
+        if items:
+            random_item = random.choice(items)
+            # Show random item
+            st.success(f"🎉 {random_item['content']}")
+        else:
+            st.warning("할 일이 없습니다.")
 
 elif page == "할 일":
     st.title("Todo")
