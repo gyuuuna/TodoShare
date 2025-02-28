@@ -19,16 +19,16 @@ todos = db[COLLECTION_NAME]
 
 kst = pytz.timezone("Asia/Seoul")
 
-st.set_page_config(page_title="TodoShare", layout="wide")
+st.set_page_config(page_title="도장깨기", layout="wide")
 
 # 화면 선택
-page = st.sidebar.radio("메뉴", ["할 일 입력", "랜덤 뽑기", "할 일", "완료된 할 일"])
+page = st.sidebar.radio("메뉴", ["Todo 입력", "랜덤 뽑기", "Todo", "완료된 Todo"])
 
-if page == "할 일 입력":
+if page == "Todo 입력":
     st.title("Todo 입력")
 
     # 큰 텍스트 입력 필드
-    content = st.text_area("할 일 입력", height=200)
+    content = st.text_area("Todo 입력", height=200)
     if st.button("등록"):
         if content.strip():
             created_at = datetime.datetime.now(pytz.utc).astimezone(kst)
@@ -108,9 +108,9 @@ elif page == "랜덤 뽑기":
             # Show random item
             st.success(f"🎉 {random_item['content']}")
         else:
-            st.warning("할 일이 없습니다.")
+            st.warning("Todo이 없습니다.")
 
-elif page == "할 일":
+elif page == "Todo":
     st.title("Todo")
     items = list(todos.find({"completed": False}).sort("_id", -1))
 
@@ -162,7 +162,7 @@ elif page == "할 일":
                 st.success("완료 처리됨!")
                 st.rerun()
 
-elif page == "완료된 할 일":
+elif page == "완료된 Todo":
     st.title("완료된 Todo")
     done_items = list(todos.find({"completed": True}).sort("date", -1))
 
